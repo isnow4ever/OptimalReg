@@ -1,0 +1,11 @@
+function fitness = computeFitness(cloud_model,cloud_data,theta,phi,psi,a,b,c)
+%COMPUTEFITNESS 此处显示有关此函数的摘要
+%   此处显示详细说明
+    R = angle2dcm(theta,phi,psi);
+    T = [a b c];
+    cloud_data = R*cloud_data+T;
+    alpha = 0.2;
+    beta = 0.8;
+    enveloped 
+end
+
