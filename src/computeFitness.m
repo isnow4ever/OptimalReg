@@ -1,12 +1,8 @@
 function fitness = computeFitness(X)
 %COMPUTEFITNESS 此处显示有关此函数的摘要
 %   此处显示详细说明
-    load 'data_with_normals.txt';
-    load 'model_with_normals.txt'
-    cloud_model = model_with_normals(:,1:3);
-    cloud_data = data_with_normals(:,1:3);
-    normals_model = model_with_normals(:,4:6);
-    normals_data = data_with_normals(:,4:6);
+    global cloud_model;
+    global cloud_data;
     H = [0.01 0.1 0.01 20 20 0.5];
     X = H'*X;
     theta = X(1);
