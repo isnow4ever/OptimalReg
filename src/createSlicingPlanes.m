@@ -4,7 +4,6 @@ function slicing_planes = createSlicingPlanes(datum_plane,cloud,number)
     %n = size(cloud, 2);
     %points_distance = zero(n);
     points_distance = computePointToPlaneDistance(cloud, datum_plane);
-    double mA mB mC mD;
     mA = datum_plane(1);
     mB = datum_plane(2);
     mC = datum_plane(3);
@@ -13,8 +12,8 @@ function slicing_planes = createSlicingPlanes(datum_plane,cloud,number)
     step = (max(points_distance) / (number + 1)) * sqrt(mA*mA + mB*mB + mC*mC);
     slicing_planes = zeros(number,4);
     for i = 1:number
-        plane = [mA, mB, mC, mD - i*step];
-        slicing_planes(i) = plane;
+        plane = [mA mB mC (mD-i*step)];
+        slicing_planes(i,1:length(plane)) = plane;
     end
 end
 

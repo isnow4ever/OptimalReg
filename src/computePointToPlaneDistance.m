@@ -1,14 +1,12 @@
 function distance = computePointToPlaneDistance(cloud,plane)
 %COMPUTEPOINTTOPLANEDISTANCE 此处显示有关此函数的摘要
 %   此处显示详细说明
-    double dt;
-    double mA mB mC mD mX mY mZ;
     mA = plane(1);
     mB = plane(2);
     mC = plane(3);
     mD = plane(4);
     n = size(cloud, 2);
-    distance = zeros(n);
+    distance = zeros(n,1);
     for i = 1:n 
         mX = cloud(i,1);
         mY = cloud(i,2);
