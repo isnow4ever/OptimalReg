@@ -1,0 +1,10 @@
+options = optimoptions(@ga,'PlotFcn',{@gaplotbestf,@gaplotstopping});
+options.InitialPopulationRange = [-1,-1,-1,-1,-1,-1;1,1,1,1,1,1];
+options.PopulationSize = 20;
+options.MaxStallGenerations = 10;
+FitnessFcn = @computeFitness;
+numberOfVariables = 6;
+LB = -ones(1,6);
+UB = ones(1,6);
+rng('default');
+[x,fval,exitFlag,Output,population,scores] = ga(FitnessFcn,numberOfVariables,[],[],[
