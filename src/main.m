@@ -2,12 +2,15 @@ clc;
 global cloud_model;
 global cloud_data;
 
-pointcloud1 = pcread('blade_model_01.ply');
-pointcloud2 = pcread('trans_data.ply');
+pointcloud1 = pcread('part_2_m.ply');
+pointcloud2 = pcread('part_2_d_t.ply');
 pcshowpair(pointcloud1,pointcloud2);
 tform = pcregrigid(pointcloud2,pointcloud1,'MaxIterations',200);
 cloud=pctransform(pointcloud2,tform);
 pcshowpair(pointcloud1,cloud);
+
+[datum_model,datum_model_cloud] = computeDatumCoefficients(pointcloud1);
+[datum_data,datum_data_cloud] = computeDatumCoefficients(cloud);
 
 cloud_model = pointcloud1;
 cloud_data = cloud;
