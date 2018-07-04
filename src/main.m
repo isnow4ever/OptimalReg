@@ -1,36 +1,26 @@
 clc;
-load 'data_with_normals.txt';
-load 'model_with_normals.txt'
 global cloud_model;
 global cloud_data;
-cloud_model = model_with_normals(:,1:3);
-cloud_data = data_with_normals(:,1:3);
-normals_model = model_with_normals(:,4:6);
-normals_data = data_with_normals(:,4:6);
-x1 = model_with_normals(:,1);
-y1 = model_with_normals(:,2);
-z1 = model_with_normals(:,3);
-x2 = data_with_normals(:,1);
-y2 = data_with_normals(:,2);
-z2 = data_with_normals(:,3);
-%scatter3(x1,y1,z1,0.01,'red');
-%hold on;
-%scatter3(x2,y2,z2,0.01,'green');
-%hold on;
+
 pointcloud1 = pcread('blade_model_01.ply');
-pointcloud2 = pcread('blade_data.ply');
-% pcshowpair(pointcloud1,pointcloud2);
-tform = pcregrigid(pointcloud2,pointcloud1,'MaxIterations',2000);
+pointcloud2 = pcread('trans_data.ply');
+pcshowpair(pointcloud1,pointcloud2);
+tform = pcregrigid(pointcloud2,pointcloud1,'MaxIterations',200);
 cloud=pctransform(pointcloud2,tform);
 pcshowpair(pointcloud1,cloud);
 
-% options = optimoptions(@ga,'PlotFcn',{@gaplotbestf,@gaplotstopping});
-% options.InitialPopulationRange = [-1,-1,-1,-1,-1,-1;1,1,1,1,1,1];
-% options.PopulationSize = 200;
-% options.MaxStallGenerations = 50;
-% FitnessFcn = @computeFitness;
-% numberOfVariables = 6;
-% LB = -ones(1,6);
-% UB = ones(1,6);
-% rng('default');
-% [x,fval,exitFlag,Output,population,scores] = ga(FitnessFcn,numberOfVariables,[],[],[],[],LB,UB,[],options);
+cloud_model = pointcloud1;
+cloud_data = cloud;
+% A = [1 0 0 0 0 0];
+% fitness = computeFitness(A);
+
+options = optimoptions(@ga,'PlotFcn',{@gaplotbestf,@gaplotstopping});
+options.InitialPopulationRange = [-1,-1,-1,-1,-1,-1;1,1,1,1,1,1];
+options.PopulationSize = 20;
+options.MaxStallGenerations = 10;
+FitnessFcn = @computeFitness;
+numberOfVariables = 6;
+LB = -ones(1,6);
+UB = ones(1,6);
+rng('default');
+[x,fval,exitFlag,Output,population,scores] = ga(FitnessFcn,numberOfVariables,[],[],[],[],LB,UB,[],options);

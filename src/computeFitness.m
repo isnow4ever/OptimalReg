@@ -3,8 +3,13 @@ function fitness = computeFitness(X)
 %   此处显示详细说明
     global cloud_model;
     global cloud_data;
-    H = [0.01 0.1 0.01 20 20 0.5];
-    X = H'*X;
+    centroid = mean(cloud_model.Location);
+    tf1 = [eye(3) zeros(3,1);-centroid 1];
+    TF1 = affine3d(tf1);
+    m_data = pctransform(cloud_data,TF1);
+    
+    H = [0.1 0.01 0.01 2 2 1];
+    X = H.*X;
     theta = X(1);
     phi = X(2);
     psi = X(3);
@@ -13,25 +18,35 @@ function fitness = computeFitness(X)
     c = X(6);
     R = angle2dcm(theta,phi,psi);
     T = [a b c];
-    cloud_data = (R*cloud_data'+T')';
+    tf = [R zeros(3,1);T 1];
+    TF = affine3d(tf);
+    n_data = pctransform(m_data,TF);
+    
+    tf2 = [eye(3) zeros(3,1);centroid 1];
+    TF2 = affine3d(tf2);
+    trans_data = pctransform(n_data,TF2);
+    pcshowpair(cloud_model,trans_data);
+    
     alpha = 0.2;
     beta = 0.8;
-    probability = 0.7;
-    enveloped = estimateEnveloped(probability, cloud_model, cloud_data);
+    probability = 0.9;
+    [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_model, trans_data);
     if enveloped == true
-        datum_model = computeDatumCoefficients(cloud_model);
-        datum_data = computeDatumCoefficients(cloud_data);
+        [datum_model,datum_model_cloud] = computeDatumCoefficients(cloud_model);
+        [datum_data,datum_data_cloud] = computeDatumCoefficients(trans_data);
         mA = datum_model(1);
 		mB = datum_model(2);
 		mC = datum_model(3);
 		datum_normal = [mA / sqrt(mA*mA + mB*mB + mC*mC)  mB / sqrt(mA*mA + mB*mB + mC*mC) mC / sqrt(mA*mA + mB*mB + mC*mC)];
-		datum_error = computeDatumError(datum_model, datum_data, datum_normal);
+		datum_error = computeDatumError(datum_model_cloud, datum_data_cloud, datum_normal);
 		dist_variance = computeSurfaceVariance(dist);
         sigmoid_e = 1 / (1 + sqrt(0.01 * datum_error));
 		sigmoid_v = 1 / (1 + sqrt(dist_variance));
-		fitness = alpha * sigmoid_e + beta * sigmoid_v;
+% 		fitness = alpha * sigmoid_e + beta * sigmoid_v;
+%         fitness = -dist_variance;
     else
-        fitness = 1.0;
+        fitness = 0.0;
     end
+    fitness = -enveloped_rate;
 end
 

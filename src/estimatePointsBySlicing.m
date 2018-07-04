@@ -7,20 +7,20 @@ function [points_on_plane_m,points_on_plane_d] = estimatePointsBySlicing(slicing
     data_dist = computePointToPlaneDistance(cloud_data, slicing_plane);
 
     % Create the filtering object
-    size_m = size(cloud_model, 2);
-    size_d = size(cloud_data, 2);
+    size_m = cloud_model.Count;
+    size_d = cloud_data.Count;
     for i = 1:size_m
-        p = [cloud_model(i,1), cloud_model(i,1), cloud_model(i,1)];
+        p = cloud_model.Location(i,:);
         if model_dist(i) < epsilon
             point = computeProjectPoint(p,slicing_plane);
-            points_on_plane_m = [points_on_plane_m point];
+            points_on_plane_m = [points_on_plane_m; point];
         end
     end
     for j = 1:size_d
-        p = [cloud_data(j,1), cloud_data(j,1), cloud_data(j,1)];
-        if data_dist(i) < epsilon
+        p = cloud_data.Location(j,:);
+        if data_dist(j) < epsilon
             point = computeProjectPoint(p,slicing_plane);
-            points_on_plane_d = [points_on_plane_d point];
+            points_on_plane_d = [points_on_plane_d; point];
         end
     end
 end

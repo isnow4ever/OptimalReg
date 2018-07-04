@@ -1,14 +1,13 @@
 function inner = estimateInnerPoint(point,chull_points)
 %ESTIMATEINNERPOINT 此处显示有关此函数的摘要
 %   此处显示详细说明
-    double px py sx sy tx ty;
-    double sum = 0.0;
+    PI = 3.1415926536;
+    s = 0.0;
     px = point(1);
     py = point(2);
     size_p = size(chull_points,2);
-    n = size_p;
     m = 1:size_p;
-    n = [size_p,1:size_p-1];
+    n = [size_p 1:(size_p-1)];
     for i = 1:size_p
         sx = chull_points(m(i),1);
         sy = chull_points(m(i),2);
@@ -31,10 +30,10 @@ function inner = estimateInnerPoint(point,chull_points)
             angle = angle + PI * 2;
         end
 
-        sum = sum + angle;
+        s = s + angle;
     end
 
-    if round(sum / PI) == 0
+    if round(s / PI) == 0
         inner = false;
     else
         inner = true;

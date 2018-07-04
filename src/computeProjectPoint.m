@@ -9,10 +9,12 @@ function point = computeProjectPoint(p,plane)
     mC = plane(3);
     mD = plane(4);
 
-    x = ((mB*mB + mC*mC)*px - mA*mB*py - mA*mC*pz - mA*mD) / (mA*mA + mB*mB +mC*mC);
-    y = (mB/mA) * (x - px) + py;
-    z = (mC/mA) * (x - px) + pz;
-
+%     x = ((mB*mB + mC*mC)*px - mA*mB*py - mA*mC*pz - mA*mD) / (mA*mA + mB*mB +mC*mC);
+%     y = (mB/mA) * (x - px) + py;
+%     z = (mC/mA) * (x - px) + pz;
+    x = px;
+    y = py;
+    z = -mD;
     point = [x y z];
 end
 
