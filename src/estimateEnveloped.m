@@ -1,7 +1,7 @@
 function [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_model, cloud_data)
 %ESTIMATEEVELOPED 此处显示有关此函数的摘要
 %   此处显示详细说明
-    roi = [-inf,inf;-inf,inf;40,inf];
+    roi = [-inf,inf;-inf,inf;-inf,inf];
     indices = findPointsInROI(cloud_model, roi);
     cloud_model = select(cloud_model,indices);
     indices = findPointsInROI(cloud_data, roi);
@@ -9,7 +9,7 @@ function [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_
 %     pcshowpair(cloud_model,cloud_data);
     
     datum_plane = [0.0 0.0 1.0 0.0];
-    layers_num = 30;
+    layers_num = 5;
     slicing_planes = createSlicingPlanes(datum_plane, cloud_model, layers_num);
     enveloped_count = 0;
     total_count = 0;
@@ -18,8 +18,9 @@ function [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_
         [points_on_planes_m, points_on_planes_d] = estimatePointsBySlicing(slicing_planes(i,:), cloud_model, cloud_data, 1.0);
         pt_on_planes_m = zeros(size(points_on_planes_m,1),3);
         pt_on_planes_d = zeros(size(points_on_planes_d,1),3);
+        k = boundary(double(points_on_planes_d(:,1:2)),1);
         for j=1:size(points_on_planes_m,1)
-            enveloped_point = estimateInnerPoint2(points_on_planes_m(j,:), points_on_planes_d);
+            enveloped_point = estimateInnerPoint2(points_on_planes_m(j,:), points_on_planes_d, k);
             if enveloped_point == true
                 enveloped_count = enveloped_count + 1;
             end

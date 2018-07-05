@@ -3,13 +3,14 @@ function fitness = computeFitness(X)
 %   此处显示详细说明
     global cloud_model;
     global cloud_data;
-    global triangles;
-    centroid = mean(cloud_model.Location);
+    global cloud_datum;
+%     global triangles;
+    centroid = mean(cloud_datum.Location);
     tf1 = [eye(3) zeros(3,1);-centroid 1];
     TF1 = affine3d(tf1);
     m_data = pctransform(cloud_data,TF1);
     
-    H = [0.1 0.01 0.01 2 2 1];
+    H = [0.01 0.005 0.005 2 2 1];
     X = H.*X;
     theta = X(1);
     phi = X(2);
