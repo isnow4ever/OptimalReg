@@ -33,6 +33,11 @@ pcshowpair(cloud_model,cloud_data);
 % 
 % A = [0 0 0 0 0 0];
 % fitness = computeFitness(A);
+    global Di Vi Ei Fi;
+    Di = [];
+    Vi = [];
+    Ei = [];
+    Fi = [];
 
 options = optimoptions(@ga,'PlotFcn',{@gaplotbestf,@gaplotstopping});
 options.InitialPopulationRange = [-1,-1,-1,-1,-1,-1;1,1,1,1,1,1];

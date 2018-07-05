@@ -1,9 +1,11 @@
 function fitness = computeFitness(X)
 %COMPUTEFITNESS 此处显示有关此函数的摘要
-%   此处显示详细说明
+%   此处显示详细说明\
+    PI = 3.141592654;
     global cloud_model;
     global cloud_data;
     global cloud_datum;
+    global Di Vi Ei Fi;
 %     global triangles;
     centroid = mean(cloud_datum.Location);
     tf1 = [eye(3) zeros(3,1);-centroid 1];
@@ -29,8 +31,9 @@ function fitness = computeFitness(X)
     trans_data = pctransform(n_data,TF2);
     %pcshowpair(cloud_model,trans_data);
     
-    alpha = 0.2;
-    beta = 0.8;
+    alpha = 0.3;
+    beta = 0.1;
+    gama = 0.8;
     probability = 0.9;
     [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_model, trans_data);
 %     in = inpolyhedron(triangles.ConnectivityList,triangles.Points,trans_data.Location);
@@ -42,22 +45,32 @@ function fitness = computeFitness(X)
 %         enveloped = false;
 %     end
     
-    if enveloped == true
+%     if enveloped == true
         [datum_model,datum_model_cloud] = computeDatumCoefficients(cloud_model);
         [datum_data,datum_data_cloud] = computeDatumCoefficients(trans_data);
-        mA = datum_model(1);
-		mB = datum_model(2);
-		mC = datum_model(3);
-		datum_normal = [mA / sqrt(mA*mA + mB*mB + mC*mC)  mB / sqrt(mA*mA + mB*mB + mC*mC) mC / sqrt(mA*mA + mB*mB + mC*mC)];
-		datum_error = computeDatumError(datum_model_cloud, datum_data_cloud, datum_normal);
+		datum_model_n = datum_model(1:3)/norm(datum_model(1:3));
+        datum_data_n = datum_data(1:3)/norm(datum_data(1:3));
+        lamnda = acos(dot(datum_model_n,datum_data_n)/(norm(datum_model_n)*norm(datum_data_n)));
+        if lamnda > PI/2
+            lamnda = lamnda - PI;
+        end
+		%datum_error = computeDatumError(datum_model_cloud, datum_data_cloud, datum_normal);
 		dist_variance = computeSurfaceVariance(dist);
-        sigmoid_e = 1 / (1 + sqrt(0.01 * datum_error));
-		sigmoid_v = 1 / (1 + sqrt(dist_variance));
+        %sigmoid_e = 1 / (1 + sqrt(0.01 * datum_error));
+		%sigmoid_v = 1 / (1 + sqrt(dist_variance));
 % 		fitness = alpha * sigmoid_e + beta * sigmoid_v;
 %         fitness = -dist_variance;
-    else
-        fitness = 0.0;
-    end
-    fitness = -enveloped_rate;
+        D = abs(lamnda)/0.02; 
+        V = dist_variance/25;
+        E = 1 - enveloped_rate;
+        fitness = alpha * D + beta * exp(V) + gama * exp(E);
+        Di = [Di D];
+        Vi = [Vi V];
+        Ei = [Ei E];
+        Fi = [Fi fitness];
+%     else
+%         fitness = 0.0;
+%     end
+%     fitness = -enveloped_rate;
 end
 
