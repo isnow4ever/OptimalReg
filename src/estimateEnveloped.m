@@ -6,7 +6,7 @@ function [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_
     cloud_model = select(cloud_model,indices);
     indices = findPointsInROI(cloud_data, roi);
     cloud_data = select(cloud_data,indices);
-    pcshowpair(cloud_model,cloud_data);
+%     pcshowpair(cloud_model,cloud_data);
     
     datum_plane = [0.0 0.0 1.0 0.0];
     layers_num = 30;
@@ -16,18 +16,18 @@ function [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_
     dist = [];
     for i=1:layers_num
         [points_on_planes_m, points_on_planes_d] = estimatePointsBySlicing(slicing_planes(i,:), cloud_model, cloud_data, 1.0);
-        pt_on_planes_m = zeros(size(points_on_planes_m,2),3);
-        pt_on_planes_d = zeros(size(points_on_planes_d,2),3);
-        for j=1:size(points_on_planes_m,2)
+        pt_on_planes_m = zeros(size(points_on_planes_m,1),3);
+        pt_on_planes_d = zeros(size(points_on_planes_d,1),3);
+        for j=1:size(points_on_planes_m,1)
             enveloped_point = estimateInnerPoint2(points_on_planes_m(j,:), points_on_planes_d);
             if enveloped_point == true
                 enveloped_count = enveloped_count + 1;
             end
             pt_on_planes_m(j,:) = [points_on_planes_m(j,1),points_on_planes_m(j,2),0.0];
         end
-        total_count = total_count + size(points_on_planes_m,2);
+        total_count = total_count + size(points_on_planes_m,1);
 
-        for k=1:size(points_on_planes_d,2)
+        for k=1:size(points_on_planes_d,1)
             pt_on_planes_d(k,:) = [points_on_planes_d(k,1),points_on_planes_d(k,2),0.0];
         end
         idx = knnsearch(pt_on_planes_d,pt_on_planes_m);

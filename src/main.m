@@ -2,8 +2,8 @@ clc;
 global cloud_model;
 global cloud_data;
 
-pointcloud1 = pcread('part_3_m.ply');
-pointcloud2 = pcread('part_3_d_t.ply');
+pointcloud1 = pcread('part_1_m.ply');
+pointcloud2 = pcread('part_1_d_t.ply');
 pcshowpair(pointcloud1,pointcloud2);
 tform = pcregrigid(pointcloud2,pointcloud1,'MaxIterations',200);
 cloud=pctransform(pointcloud2,tform);
@@ -14,10 +14,14 @@ view(2);
 figure;
 pcshowpair(datum_model_cloud,datum_data_cloud);
 
+% 
+% global triangles;
+% triangles = triangulation(boundary(double(pointcloud1.Location),1),double(pointcloud1.Location));
 
 cloud_model = pointcloud1;
 cloud_data = cloud;
-% A = [1 0 0 0 0 0];
+% 
+% A = [0 0 0 0 0 0];
 % fitness = computeFitness(A);
 
 options = optimoptions(@ga,'PlotFcn',{@gaplotbestf,@gaplotstopping});

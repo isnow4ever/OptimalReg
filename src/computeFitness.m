@@ -3,6 +3,7 @@ function fitness = computeFitness(X)
 %   此处显示详细说明
     global cloud_model;
     global cloud_data;
+    global triangles;
     centroid = mean(cloud_model.Location);
     tf1 = [eye(3) zeros(3,1);-centroid 1];
     TF1 = affine3d(tf1);
@@ -25,12 +26,21 @@ function fitness = computeFitness(X)
     tf2 = [eye(3) zeros(3,1);centroid 1];
     TF2 = affine3d(tf2);
     trans_data = pctransform(n_data,TF2);
-    pcshowpair(cloud_model,trans_data);
+    %pcshowpair(cloud_model,trans_data);
     
     alpha = 0.2;
     beta = 0.8;
     probability = 0.9;
     [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_model, trans_data);
+%     in = inpolyhedron(triangles.ConnectivityList,triangles.Points,trans_data.Location);
+%     in_count = size(find(in(:)==true),1);
+%     enveloped_rate = in_count / size(in,1);
+%     if enveloped_rate > probability
+%         enveloped = true;
+%     else
+%         enveloped = false;
+%     end
+    
     if enveloped == true
         [datum_model,datum_model_cloud] = computeDatumCoefficients(cloud_model);
         [datum_data,datum_data_cloud] = computeDatumCoefficients(trans_data);
