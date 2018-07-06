@@ -1,7 +1,7 @@
 function [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_model, cloud_data)
 %ESTIMATEEVELOPED 此处显示有关此函数的摘要
 %   此处显示详细说明
-    roi = [-inf,inf;-inf,inf;-inf,inf];
+    roi = [-inf,inf;-inf,inf;40,inf];
     indices = findPointsInROI(cloud_model, roi);
     cloud_model = select(cloud_model,indices);
     indices = findPointsInROI(cloud_data, roi);
