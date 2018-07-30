@@ -31,9 +31,9 @@ function fitness = computeFitness(X)
     trans_data = pctransform(n_data,TF2);
     %pcshowpair(cloud_model,trans_data);
     
-    alpha = 0.3;
-    beta = 0.1;
-    gama = 0.8;
+    alpha = 0.1;
+    beta = 0.7;
+    gama = 0.9;
     probability = 0.9;
     [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_model, trans_data);
 %     in = inpolyhedron(triangles.ConnectivityList,triangles.Points,trans_data.Location);
