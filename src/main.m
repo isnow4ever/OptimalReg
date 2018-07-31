@@ -1,12 +1,31 @@
 clc;
 global cloud_model;
 global cloud_data;
-result_dir = 'result7';
+result_dir = 'result10_created_base';
+test = 2;
 mkdir(result_dir);
 cd(result_dir);
+if test == 1
 pointcloud1 = pcread('blade_model_01.ply');
+pcwrite(pointcloud1,'model','PLYFormat','binary');
 pointcloud2 = pcread('trans_data.ply');
 pointcloud3 = pcread('blade_original.ply');
+elseif test == 2
+pointcloud1 = pcread('part_1_m.ply');
+pcwrite(pointcloud1,'model','PLYFormat','binary');
+pointcloud2 = pcread('part_1_d_t.ply');
+pointcloud3 = pcread('part_1_d.ply');
+elseif test == 3
+pointcloud1 = pcread('part_2_m.ply');
+pcwrite(pointcloud1,'model','PLYFormat','binary');
+pointcloud2 = pcread('part_2_d_t.ply');
+pointcloud3 = pcread('part_2_d.ply');
+elseif test == 4
+pointcloud1 = pcread('part_3_m.ply');
+pcwrite(pointcloud1,'model','PLYFormat','binary');
+pointcloud2 = pcread('part_3_d_t.ply');
+pointcloud3 = pcread('part_3_d.ply');
+end;
 figure;
 init = pcshowpair(pointcloud1,pointcloud3);
 saveas(init,'init','fig');
@@ -82,7 +101,10 @@ n_data = pctransform(m_data,TF);
 tf2 = [eye(3) zeros(3,1);centroid 1];
 TF2 = affine3d(tf2);
 trans_data = pctransform(n_data,TF2);
+pcwrite(trans_data,'trans_data','PLYFormat','binary');
 figure;
 final = pcshowpair(pointcloud1,trans_data);
 view(2);
 saveas(final,'final','fig');
+myplot('model.ply','trans_data.ply');
+save('matlab');
