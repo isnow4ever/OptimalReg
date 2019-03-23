@@ -1,10 +1,10 @@
 clc;
 global cloud_model;
 global cloud_data;
-result_dir = 'result18_TB_weight_log_fitness'; %create result folder
+result_dir = strcat('..\results\','result19'); %create result folder
 test = 1; %select data
 mkdir(result_dir);
-cd(result_dir);
+%cd(result_dir);
 if test == 1
 pointcloud1 = pcread('blade_model_01.ply');
 pcwrite(pointcloud1,'model','PLYFormat','binary');

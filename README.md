@@ -37,14 +37,24 @@ part_4
 part_5
 
 # Instruction
-In folder [data](data/), part_1_m.ply is model. part_1_d.ply is original data. part_1_d_t.ply is transformed data with Sac-IA.
+In folder [data](data/)
+
+part_1_m.ply is model.
+
+part_1_d.ply is original data.
+
+part_1_d_t.ply is transformed data with Sac-IA.
 
 ## model selection
 [main.m](src/main.m) is the main function.
 
 ```javascipt
-result_dir = 'result18'; %create result folder
 test = 1; %select data
+
+if test == 2
+pointcloud1 = pcread('part_1_m.ply'); % model
+pointcloud2 = pcread('part_1_d_t.ply'); % transformed data with Sac-IA (Note that the PLY is computed by PCL in C++)
+pointcloud3 = pcread('part_1_d.ply'); % original data
 ```
 ## datum estimation 
 datum estimated in [computeDatumCoefficients.m](src/computeDatumCoefficients.m)
@@ -70,6 +80,12 @@ Weights can be changed in [computeFitness.m](src/computeFitness.m) Line 36-39
 ```
 
 ## Results
+
+Result folder is created in [main.m](src/main.m) Line 4.
+
+```javascipt
+result_dir = strcat('..\results\','result19'); %create result folder
+```
 
 init.fig is initial states.
 
