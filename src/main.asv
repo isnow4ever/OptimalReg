@@ -90,7 +90,7 @@ rng('default');
 [x,fval,exitFlag,Output,population,scores] = ga(FitnessFcn,numberOfVariables,[],[],[],[],LB,UB,[],options);
 % x = [-0.11 -0.56 -0.8 0.3940 0.2870 0.2314];
 centroid = mean(cloud_datum.Location);
-tf1 = [eye(3) zeros(3,1);-centroid 1]; %designed datum in z, '-centroid' is replaced with 'z-centroid' 
+tf1 = [eye(3) zeros(3,1);-centroid 1];
 TF1 = affine3d(tf1);
 m_data = pctransform(cloud2,TF1);
 

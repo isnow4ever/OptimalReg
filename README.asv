@@ -64,10 +64,3 @@ Weights can be changed in computeFitness.m Line 36-39
     probability = 0.9;
 ```
 
-## Results
-
-init.fig is initial states.
-sac_ia.fig is initial guess employing Sac-IA for optimal stages.
-icp.fig is approach with ICP.
-final.fig is approach in this program.
-ga.fig is GA process record.
