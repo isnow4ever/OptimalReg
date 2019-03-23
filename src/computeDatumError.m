@@ -13,5 +13,6 @@ function datum_error = computeDatumError(datum_model,datum_data,normal)
         e = v*w';
         datum_error = datum_error + e*e;
     end
+     datum_error = datum_error/datum_model.Count;
 end
 

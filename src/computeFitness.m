@@ -31,8 +31,10 @@ function fitness = computeFitness(X)
     trans_data = pctransform(n_data,TF2);
     %pcshowpair(cloud_model,trans_data);
     
-    alpha = 0.3;
-    beta = 0.1;
+    %alpha = 0.3;
+    %beta = 0.1;
+    alpha = 0.1;
+    beta = 0.7;
     gama = 0.9;
     probability = 0.9;
     [enveloped,dist,enveloped_rate] = estimateEnveloped(probability, cloud_model, trans_data);
@@ -54,7 +56,7 @@ function fitness = computeFitness(X)
         if lamnda > PI/2
             lamnda = lamnda - PI;
         end
-		%datum_error = computeDatumError(datum_model_cloud, datum_data_cloud, datum_normal);
+		datum_error = computeDatumError(datum_model_cloud, datum_data_cloud, datum_model_n);
 		dist_variance = computeSurfaceVariance(dist);
         %sigmoid_e = 1 / (1 + sqrt(0.01 * datum_error));
 		%sigmoid_v = 1 / (1 + sqrt(dist_variance));
@@ -63,7 +65,7 @@ function fitness = computeFitness(X)
         D = abs(lamnda)/0.02; 
         V = dist_variance/25;
         E = 1 - enveloped_rate;
-        fitness = alpha * D + beta * exp(V) + gama * exp(E);
+        fitness = alpha * log(datum_error) + beta * exp(V) + gama * exp(E);
         Di = [Di D];
         Vi = [Vi V];
         Ei = [Ei E];

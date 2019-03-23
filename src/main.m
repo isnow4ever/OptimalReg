@@ -1,8 +1,8 @@
 clc;
 global cloud_model;
 global cloud_data;
-result_dir = 'result10_created_base';
-test = 2;
+result_dir = 'result18_TB_weight_log_fitness';
+test = 1;
 mkdir(result_dir);
 cd(result_dir);
 if test == 1
@@ -25,7 +25,17 @@ pointcloud1 = pcread('part_3_m.ply');
 pcwrite(pointcloud1,'model','PLYFormat','binary');
 pointcloud2 = pcread('part_3_d_t.ply');
 pointcloud3 = pcread('part_3_d.ply');
-end;
+elseif test == 5
+pointcloud1 = pcread('part_4_m.ply');
+pcwrite(pointcloud1,'model','PLYFormat','binary');
+pointcloud2 = pcread('part_4_d_t.ply');
+pointcloud3 = pcread('part_4_d.ply');
+elseif test == 6
+pointcloud1 = pcread('part_5_m.ply');
+pcwrite(pointcloud1,'model','PLYFormat','binary');
+pointcloud2 = pcread('part_5_d_t.ply');
+pointcloud3 = pcread('part_5_d.ply');
+end
 figure;
 init = pcshowpair(pointcloud1,pointcloud3);
 saveas(init,'init','fig');
